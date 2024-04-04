@@ -1,66 +1,63 @@
 <template>
   <div class="container">
-    <div v-for="(card, index) in cards" :key="index"  @click="handleCardClick(index)">
-      <div class="card-front"></div>
-      <vue-flip :options="flipOptions">
-        <template v-slot:front>
-          <!-- Contenu de la carte côté face -->
-          <div class="card-front"></div>
-        </template>
-        <template v-slot:back>
-          <!-- Contenu de la carte côté verso -->
-          <div class="card-back">{{ card === 'chat' ? '🐱' : '' }}</div>
-        </template>
-      </vue-flip>
+    <div v-for="(card, index) in cards" :key="index" @click="handleCardClick(index)" class="card">
+      <div v-if="!card.flipped" class="card-front"> <!-- Affiche le contenu de la carte à l'avant -->
+        Front
+      </div>
+      <div v-else class="card-back"> <!-- Affiche le contenu de la carte à l'arrière -->
+        {{ card.content }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { ref } from 'vue';
-import { VueFlip } from 'vue-flip';
 
 export default {
-  components: {
-    // VueFlip,
-    'vue-flip': VueFlip
-  },
   setup() {
-    const cards = ref(['vide', 'vide', 'vide', 'vide', 'vide', 'vide', 'vide', 'vide', 'vide']);
+    const cards = ref([
+      { content: '', flipped: false },
+      { content: '', flipped: false },
+      { content: '', flipped: false },
+      { content: '', flipped: false },
+      { content: '', flipped: false },
+      { content: '', flipped: false },
+      { content: '', flipped: false },
+      { content: '', flipped: false },
+      { content: '', flipped: false },
+    ]);
     let clickCount = ref(0);
     const maxClicks = 3;
-    const flipOptions = {
-      duration: 500, // Durée de l'animation de retournement (en ms)
-    };
 
     const handleCardClick = (index) => {
-      if (cards.value[index] === 'chat') {
-        alert('Vous avez trouvé le chat!');
-        // Réinitialiser le jeu
-        resetGame();
-      } else {
-        cards.value[index] = 'vide'; // Marquer la carte comme vide
-        clickCount.value++;
-        if (clickCount.value === maxClicks) {
-          // Si le joueur a cliqué trois fois sans trouver le chat, déplacez le chat
-          const newIndex = Math.floor(Math.random() * cards.value.length);
-          cards.value[newIndex] = 'chat';
-          // Réinitialiser le jeu
+      const currentCard = cards.value[index];
+      if (!currentCard.flipped) {
+        if (currentCard.content === 'chat') {
+          alert('Vous avez trouvé le chat!');
           resetGame();
+        } else {
+          currentCard.flipped = true;
+          clickCount.value++;
+          if (clickCount.value === maxClicks) {
+            const newIndex = Math.floor(Math.random() * cards.value.length);
+            cards.value[newIndex].content = 'chat';
+            resetGame();
+          }
         }
       }
     };
 
     const resetGame = () => {
-      // Réinitialiser le jeu après une victoire ou si le joueur n'a pas trouvé le chat
       clickCount.value = 0;
-      // Réinitialiser toutes les cartes à vide
-      cards.value = ['vide', 'vide', 'vide', 'vide', 'vide', 'vide', 'vide', 'vide', 'vide'];
+      cards.value.forEach(card => {
+        card.flipped = false;
+        card.content = '';
+      });
     };
 
     return {
       cards,
-      flipOptions,
       handleCardClick,
     };
   },
@@ -81,11 +78,9 @@ export default {
   height: 200px;
   width: 200px;
   border: 2px solid green;
-  justify-content: center; /* Centrer horizontalement */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 24px;
 }
-
-
-
-/* Ajoutez des styles supplémentaires pour personnaliser l'apparence */
 </style>
