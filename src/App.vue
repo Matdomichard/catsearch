@@ -112,7 +112,7 @@ body {
 }
 
 .card-front {
-  background-color: #ffd700; /* Or */
+  background-color: #eadeda; /* Or */
   min-height: 250px;
   width: 250px;
   display: flex;
