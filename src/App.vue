@@ -47,9 +47,6 @@ export default {
         } else {
           clickCount.value++;
           if (clickCount.value === maxClicks) {
-            const newIndex = Math.floor(Math.random() * cards.value.length);
-            cards.value[newIndex].content = "chat";
-            cards.value[newIndex].flipped = false; // Assurez-vous que la nouvelle carte contenant le chat n'est pas retournée
             resetGame();
           }
         }
