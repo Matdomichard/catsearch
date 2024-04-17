@@ -12,7 +12,8 @@
       </div>
       <div v-else class="card-back">
         <!-- Affiche le contenu de la carte à l'arrière -->
-        {{ card.content }}
+        <img v-if="card.content === 'chat'" src="./assets/cat.png" alt="Chat" />
+        <div v-else>{{ card.content }}</div>
       </div>
     </div>
   </div>
@@ -43,11 +44,11 @@ export default {
         currentCard.flipped = true; // Inverser la carte
         if (currentCard.content === "chat") {
           alert("Vous avez trouvé le chat!");
-          resetGame();
+          setTimeout(resetGame, 800);
         } else {
           clickCount.value++;
           if (clickCount.value === maxClicks) {
-            resetGame();
+            setTimeout(resetGame, 800);
           }
         }
       }
@@ -119,6 +120,8 @@ body {
 }
 
 .card-back {
+  position: relative; /* Définit la position relative pour pouvoir positionner l'image à l'intérieur */
+
   background-color: #6495ed; /* Bleu cornflower */
   min-height: 250px;
   width: 250px;
@@ -126,5 +129,13 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 24px;
+}
+
+.card-back img {
+  position: absolute; /* Positionne l'image par rapport au conteneur parent */
+  top: 0;
+  left: 0;
+  width: 100%; /* Utilisez la largeur complète de la carte */
+  height: 100%; /* Utilisez la hauteur complète de la carte */
 }
 </style>
