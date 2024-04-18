@@ -91,7 +91,7 @@ export default {
     const showPopup = (message) => {
       winMessage.value = message;
       showWinPopup.value = true;
-      setTimeout(hidePopup, 800);
+      setTimeout(hidePopup, 1000);
     };
 
     // Fonction pour masquer la popup de victoire
@@ -116,16 +116,8 @@ export default {
 };
 </script>
 
-<style scoped>
-html,
+<style>
 body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  display: flex;
   justify-content: center;
   align-items: center;
   background: rgb(28, 229, 233);
@@ -152,11 +144,11 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 24px;
+  border-radius: 10px;
 }
 
 .card-back {
   position: relative; /* Définit la position relative pour pouvoir positionner l'image à l'intérieur */
-
   background-color: #6495ed; /* Bleu cornflower */
   min-height: 250px;
   width: 250px;
@@ -164,6 +156,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 24px;
+  border-radius: 10px;
 }
 
 .card-back img {
@@ -191,19 +184,5 @@ body {
   padding: 20px;
   border-radius: 5px;
   text-align: center;
-}
-
-.popup button {
-  margin-top: 10px;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.popup button:hover {
-  background-color: #0056b3;
 }
 </style>
