@@ -16,6 +16,13 @@
         <div v-else>{{ card.content }}</div>
       </div>
     </div>
+
+    <!-- Popup pour afficher le message de victoire -->
+    <div v-if="showWinPopup" class="popup">
+      <div class="popup-content">
+        <h2>{{ winMessage }}</h2>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,6 +31,9 @@ import { ref, onBeforeMount } from "vue";
 
 export default {
   setup() {
+    const showWinPopup = ref(false);
+    const winMessage = ref("");
+
     const cards = ref([
       { content: "X", flipped: false },
       { content: "X", flipped: false },
@@ -41,9 +51,10 @@ export default {
     const handleCardClick = (index) => {
       const currentCard = cards.value[index];
       if (!currentCard.flipped) {
-        currentCard.flipped = true; // Inverser la carte
+        currentCard.flipped = true;
         if (currentCard.content === "chat") {
-          alert("Vous avez trouvé le chat!");
+          showWinPopup.value = true;
+          winMessage.value = "Vous avez trouvé le chat!";
           setTimeout(resetGame, 800);
         } else {
           clickCount.value++;
@@ -66,7 +77,27 @@ export default {
         card.flipped = false;
         card.content = "X"; // Réinitialiser le contenu de toutes les cartes à 'X'
       });
+      showWinPopup.value = false;
       initializeGame(); // Replacer le chat sur une carte aléatoire
+    };
+
+    const restartGame = () => {
+      showWinPopup.value = false;
+      winMessage.value = "";
+      // Ajoutez ici la logique pour réinitialiser le jeu selon vos besoins
+    };
+
+    // Fonction pour afficher la popup de victoire
+    const showPopup = (message) => {
+      winMessage.value = message;
+      showWinPopup.value = true;
+      setTimeout(hidePopup, 800);
+    };
+
+    // Fonction pour masquer la popup de victoire
+    const hidePopup = () => {
+      showWinPopup.value = false;
+      winMessage.value = "";
     };
 
     onBeforeMount(() => {
@@ -76,12 +107,16 @@ export default {
     return {
       cards,
       handleCardClick,
+      showWinPopup,
+      winMessage,
+      restartGame,
+      showPopup,
     };
   },
 };
 </script>
 
-<style>
+<style scoped>
 html,
 body {
   height: 100%;
@@ -100,7 +135,7 @@ body {
     rgba(161, 195, 186, 1) 56%
   );
 }
-/* Styles pour la grille et les cartes */
+
 .container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -132,10 +167,43 @@ body {
 }
 
 .card-back img {
-  position: absolute; /* Positionne l'image par rapport au conteneur parent */
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100%; /* Utilisez la largeur complète de la carte */
-  height: 100%; /* Utilisez la hauteur complète de la carte */
+  width: 100%;
+  height: 100%;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.popup button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup button:hover {
+  background-color: #0056b3;
 }
 </style>
