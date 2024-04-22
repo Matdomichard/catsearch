@@ -180,9 +180,32 @@ body {
 }
 
 .popup-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
+  padding: 40px;
+  border-radius: 20px;
   text-align: center;
+  color: white;
+  animation: slideUpDown 1s ease forwards; /* Ajout de l'animation d'entrée */
+}
+
+.popup h2 {
+  font-size: 3.5em; /* Taille de police agrandie */
+  font-family: var(--header-font-family);
+  text-shadow: 2px 2px 4px var(--text-border-color);
+}
+
+/* Définition de l'animation */
+@keyframes slideUpDown {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 </style>
